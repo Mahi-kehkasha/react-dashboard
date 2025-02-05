@@ -1,10 +1,11 @@
 [build]
-  command = "npm run build"
+  command = "npm install && npm run build"
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
-  NPM_VERSION = "9"
+  NODE_VERSION = "18.17.0"
+  NPM_VERSION = "9.8.1"
+  CI = "false"
 
 [[redirects]]
   from = "/*"
@@ -12,4 +13,18 @@
   status = 200
 
 [build.processing]
-  skip_processing = false 
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true 

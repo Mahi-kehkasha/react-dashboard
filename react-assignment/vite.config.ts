@@ -4,11 +4,13 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: './',
   build: {
     outDir: 'dist',
-    sourcemap: true,
-    minify: 'terser',
+    sourcemap: false,
+    minify: 'esbuild',
+    target: 'es2015',
+    cssMinify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -20,18 +22,25 @@ export default defineConfig({
             'framer-motion',
           ],
           charts: ['recharts'],
-          editor: [
-            '@tiptap/react',
-            '@tiptap/starter-kit',
-            '@tiptap/extension-text-align',
-            '@tiptap/extension-underline',
-          ],
+          editor: ['@tiptap/react', '@tiptap/starter-kit'],
         },
       },
+    },
+    commonjsOptions: {
+      include: [/node_modules/],
+      extensions: ['.js', '.cjs'],
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'es2015',
     },
   },
   server: {
     port: 3000,
     open: true,
+  },
+  preview: {
+    port: 3000,
   },
 });
