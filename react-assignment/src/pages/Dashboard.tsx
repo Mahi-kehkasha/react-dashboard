@@ -19,7 +19,7 @@ import {
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { UserForm } from '../components/UserForm';
+import { UserForm, UserFormData } from '../components/UserForm';
 import { RichTextEditor } from '../components/RichTextEditor';
 import { Counter } from '../components/Counter';
 import {
@@ -152,6 +152,7 @@ export const Dashboard = () => {
     const savedContent = localStorage.getItem('userContent');
     return savedContent ? JSON.parse(savedContent) : [];
   });
+  const [users, setUsers] = useState<UserFormData[]>([]);
 
   // Colors
   const bgColor = useColorModeValue('white', 'gray.800');
@@ -192,6 +193,13 @@ export const Dashboard = () => {
     updateMonthlyData();
     const interval = setInterval(updateMonthlyData, 3600000); // Update every hour
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const storedUsers = localStorage.getItem('allUsers');
+    if (storedUsers) {
+      setUsers(JSON.parse(storedUsers));
+    }
   }, []);
 
   const handleSaveContent = (content: string) => {
@@ -397,7 +405,16 @@ export const Dashboard = () => {
               <Heading size="sm">User Profile Form</Heading>
             </CardHeader>
             <CardBody p={4}>
-              <UserForm />
+              <UserForm
+                onSubmit={(userData) => {
+                  const updatedUsers = [...users, userData];
+                  localStorage.setItem(
+                    'allUsers',
+                    JSON.stringify(updatedUsers)
+                  );
+                  setUsers(updatedUsers);
+                }}
+              />
             </CardBody>
           </MotionCard>
         </GridItem>

@@ -3,6 +3,9 @@ import { UseToastOptions } from '@chakra-ui/react';
 export interface UserData {
   id: string;
   name: string;
+  email: string;
+  phone: string;
+  address: string;
   createdAt: string;
   updatedAt: string;
   isActive: boolean;
